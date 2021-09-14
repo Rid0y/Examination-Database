@@ -1,13 +1,4 @@
-drop table ModuleDescriptor;
-drop table Module;
-drop table Answer;
-drop table QuestionPart;
-drop table Question;
-drop table Student;
-drop table Exam;
-drop table Enrollment;
-drop table ExamConduction;
-
+/* Creating Tables */
 CREATE TABLE ModuleDescriptor (
     descrpt_id int NOT NULL,
     d_description varchar(255) NOT NULL,
@@ -81,6 +72,9 @@ CREATE TABLE ExamConduction(
     FOREIGN KEY (student_id) REFERENCES Student(student_id),
     FOREIGN KEY (exam_id) REFERENCES Exam(exam_id)
 );
+/* end Tables */
+
+/*intersing data into tatbles */
 INSERT INTO ModuleDescriptor (descrpt_id , d_description )
 VALUES (100,'basically about circuits');
 INSERT INTO ModuleDescriptor (descrpt_id , d_description )
@@ -163,34 +157,44 @@ INSERT INTO ExamConduction( conduction_id, stud_ans,obt_marks, enroll_id,module_
 VALUES (77, 'C', 10, 602, 202,3,92);
 INSERT INTO ExamConduction( conduction_id, stud_ans,obt_marks, enroll_id,module_id, student_id , exam_id )
 VALUES (78, 'D', 5, 603, 203,4,93);
+/*end inserts*/
 
+/*Select all from Student*/
 select * from student;
 
+/*combines result sets of two or more SELECT statements into a single result set*/
 SELECT d_description FROM ModuleDescriptor 
 UNION
 SELECT m_description FROM Module
 ORDER BY d_description ;
 
+/*compares the result of two queries and returns the distinct rows*/
 SELECT d_description FROM ModuleDescriptor 
 INTERSECT
 SELECT m_description FROM Module
 ORDER BY d_description ;
 
+/*selects records that have matching values in both tables*/
 SELECT ModuleDescriptor.descrpt_id, Module. m_description
 FROM ModuleDescriptor
 INNER JOIN Module ON ModuleDescriptor.descrpt_id =  Module.descrpt_id;
 
+
+/*returns all records when there is a match in left (table1) or right (table2) table*/
 SELECT ModuleDescriptor.descrpt_id, Module. m_description
 FROM ModuleDescriptor
 FULL OUTER JOIN Module ON ModuleDescriptor.descrpt_id =  Module.descrpt_id
 ORDER BY ModuleDescriptor.descrpt_id;
 
+/*select specific values in tables*/
 SELECT  d_description
 FROM ModuleDescriptor 
 WHERE descrpt_id = (SELECT descrpt_id
 FROM Module
 WHERE descrpt_id = 100);
 
+
+/*return all rows in the first SELECT statement that are not returned by the second SELECT statement*/
 SELECT 
     student_id, SUM(student_id)
 FROM
